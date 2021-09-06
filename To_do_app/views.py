@@ -1,29 +1,6 @@
-from django.urls import path
 from django.shortcuts import render
 
-'''
-add the basic functionality of the database to this view.py module
-'''
-from . import models
-
 #from To_do_app.models import
-
-'''
-import timezone from django web framework
-'''
-from django.utils import timezone
-
-'''
-pip3 install requests before importing requests
-'''
-import requests
-
-'''
-this import helps us redirect to a new page with different url from the current page
-'''
-from django.shortcuts import redirect
-
-from django.http import HttpResponse
 
 '''import the class Task inside the models.py file of your application in django project'''
 from . models import Task
@@ -32,6 +9,11 @@ from . models import Task
 here in this views.py file for our app we are gonna use class based views
 '''
 from django.views.generic.list import ListView
+
+'''
+here in this views.py file for our app we are gonna use class based views
+'''
+from django.views.generic.detail import DetailView
 
 '''
 create a class named TaskList and inherit the ListView
@@ -59,3 +41,21 @@ class TaskList(ListView):
     and now in pur template we can refer to our context_object_name as tasks
     '''
     context_object_name = 'tasks'
+
+'''
+this class TaskDetail will inherit all the properties of the DetailView parent class from the inbuilt django classes
+
+this DetailView is gonna look for a template with a prefix of a model_name_detail.html
+here in my case its gonna look for task_detail.html and try to return it
+import his view class into your apps urls.py file
+
+To customize this name object to anything that we want context_object_name = 'task'
+
+now setting a cutom template name
+changing the default template name from task_detail.html to task.html can be achieved by the code below
+template_name = 'app_name/task.html' so basically we are telling django to look for task.html instead of task_detail.html
+'''
+class TaskDetail(DetailView):
+    model = Task
+    context_object_name = 'task'
+    template_name = 'To_do_app/task.html'
