@@ -1,1 +1,19 @@
 <h2>home page made by aditya</h2>
+
+<table>
+    <tr>
+      <th>Item</th>
+    </tr>
+
+    <!---getting the object_list that we discussed earlier and getting all the titles--->
+    {%for task in object_list %}
+    <tr>
+       <td>{{task.title}}</td>
+    </tr>
+
+    <!---condition if the list is empty then empty condition should execute--->
+    {%empty%}
+      <h3>No task to remember!</h3>
+
+    {%endfor%}
+</table>

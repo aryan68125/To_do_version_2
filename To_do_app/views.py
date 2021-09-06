@@ -47,3 +47,10 @@ note you should create the file in this directory only otherwise the django proj
 '''
 class TaskList(ListView):
     model = Task
+    '''
+    now we want to pass the data onto our template (frontend)
+    so how do wwe get that query set onto our template , how do we go pass it in
+
+    Bydefault django calls that query set objectList
+    django is gonna look for objects_list
+    '''
