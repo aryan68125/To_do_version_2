@@ -3,6 +3,7 @@
 <table>
     <tr>
       <th>Item</th>
+      <th></th>
     </tr>
 
     <!---getting the object_list that we discussed earlier and getting all the titles
@@ -11,6 +12,8 @@
     {%for task in tasks %}
     <tr>
        <td>{{task.title}}</td>
+       <!---a tag holds created link in the html page--->
+       <td><a href = "{%url 'task' task.id%}"> View </a></td>
     </tr>
 
     <!---condition if the list is empty then empty condition should execute--->
