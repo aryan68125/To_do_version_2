@@ -52,5 +52,10 @@ class TaskList(ListView):
     so how do wwe get that query set onto our template , how do we go pass it in
 
     Bydefault django calls that query set objectList
-    django is gonna look for objects_list
+    django is gonna look for objects_list which is the default name  of the context_object_name
+
+    so inorder to give the context_object_name (objects_list by default) your own name
+    just type context_object_name = 'tasks'
+    and now in pur template we can refer to our context_object_name as tasks
     '''
+    context_object_name = 'tasks'
