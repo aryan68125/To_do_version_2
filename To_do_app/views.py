@@ -6,7 +6,7 @@ add the basic functionality of the database to this view.py module
 '''
 from . import models
 
-#from To_do_app.models import 
+#from To_do_app.models import
 
 '''
 import timezone from django web framework
@@ -23,5 +23,7 @@ this import helps us redirect to a new page with different url from the current 
 '''
 from django.shortcuts import redirect
 
-def home(request):
-    return render(request, 'main/index.html')
+from django.http import HttpResponse
+
+def tasklist(request):
+    return HttpResponse('To Do List')
