@@ -25,5 +25,25 @@ from django.shortcuts import redirect
 
 from django.http import HttpResponse
 
-def tasklist(request):
-    return HttpResponse('To Do List')
+'''import the class Task inside the models.py file of your application in django project'''
+from . models import Task
+
+'''
+here in this views.py file for our app we are gonna use class based views
+'''
+from django.views.generic.list import ListView
+
+'''
+create a class named TaskList and inherit the ListView
+and this ListView is supposed to return back a template with a query set of data
+
+bydefault class ListView looks for the template named yourAppName_list.html
+so we need to change that and configure the class to use our custome template here in my case it is index.html
+
+so the class TaskList has inherited all the functionality of a ListView parent class
+ListView parent class will search the template named task_list.html in the directory
+To_do(project_name)/To_do_app(app_name)/templates/To_do_app(folder name)/task_list.html
+note you should create the file in this directory only otherwise the django project will crash
+'''
+class TaskList(ListView):
+    model = Task
