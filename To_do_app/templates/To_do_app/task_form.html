@@ -1,5 +1,6 @@
 <h3>task form</h3>
-
+<!---create a back link in our form --->
+<a href = "{% url 'tasks' %}">Go back</a>
 <form method ="POST" action ="">
   {% csrf_token %}
   <!---

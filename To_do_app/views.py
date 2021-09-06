@@ -1,7 +1,10 @@
 from django.shortcuts import render
 
-'''for to create view we need to import '''
-from django.views.generic.edit import CreateView
+'''
+for to create view we need to import
+UpdateView is pretty similar to createView and its gonna be imported from django.views.generic.edit
+'''
+from django.views.generic.edit import CreateView , UpdateView
 
 '''import the class Task inside the models.py file of your application in django project'''
 from . models import Task
@@ -91,3 +94,32 @@ class TaskCreate(CreateView):
      when we create an item just send that user back to the list
      '''
      success_url = reverse_lazy('tasks')
+
+'''
+this UpdateView is supposed to take in an item and its supposed to prefill an form
+and once we submit it is supposed to modify the data in the database
+bydefault this UpdateView will look for the template named model_name_form.html here in my case it will look for
+task_form.html
+'''
+class TaskUpdate(UpdateView):
+    model = Task
+
+    '''
+    by default the CreateView uses model form to work with
+    it's basically a class represntation of a Form based on a model so it's gonna take the Task Model from models.py of our application in the
+    django project and create all the fields by default
+
+    here we wanna list out all of the fields in our from so
+    fields = '__all__' will list out all of the items in the field
+    '''
+    fields = '__all__'
+
+    '''
+    so I also wann make sure that we can redirect the user successfully to a different page so we also need to add this to our
+    createView
+
+    so in here we need to set the attribute of sucess_url
+    if everything goes correctly then go ahead and redirect user to 'task'
+    when we create an item just send that user back to the list
+    '''
+    success_url = reverse_lazy('tasks')
