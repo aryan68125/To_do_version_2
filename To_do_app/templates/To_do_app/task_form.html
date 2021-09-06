@@ -1,0 +1,11 @@
+<h3>task form</h3>
+
+<form method ="POST" action ="">
+  {% csrf_token %}
+  <!---
+  since we are using CreateView class in views.py django has already created our input from for us
+  --->
+   {{form.as_p}}
+  <input type="submit" value="Submit" />
+
+</form>

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
-#from To_do_app.models import
+'''for to create view we need to import '''
+from django.views.generic.edit import CreateView
 
 '''import the class Task inside the models.py file of your application in django project'''
 from . models import Task
@@ -14,6 +15,9 @@ from django.views.generic.list import ListView
 here in this views.py file for our app we are gonna use class based views
 '''
 from django.views.generic.detail import DetailView
+
+'''import reverse_lazy and it will redirect our user to a certain parts of our page or application'''
+from django.urls import reverse_lazy
 
 '''
 create a class named TaskList and inherit the ListView
@@ -29,6 +33,7 @@ note you should create the file in this directory only otherwise the django proj
 '''
 class TaskList(ListView):
     model = Task
+
     '''
     now we want to pass the data onto our template (frontend)
     so how do wwe get that query set onto our template , how do we go pass it in
@@ -59,3 +64,30 @@ class TaskDetail(DetailView):
     model = Task
     context_object_name = 'task'
     template_name = 'To_do_app/task.html'
+
+'''
+createView has more complex logic because we are actually sending a post request to create an item
+by default the CreateView is gonna look for task_form.html
+'''
+class TaskCreate(CreateView):
+     model = Task
+
+     '''
+     by default the CreateView uses model form to work with
+     it's basically a class represntation of a Form based on a model so it's gonna take the Task Model from models.py of our application in the
+     django project and create all the fields by default
+
+     here we wanna list out all of the fields in our from so
+     fields = '__all__' will list out all of the items in the field
+     '''
+     fields = '__all__'
+
+     '''
+     so I also wann make sure that we can redirect the user successfully to a different page so we also need to add this to our
+     createView
+
+     so in here we need to set the attribute of sucess_url
+     if everything goes correctly then go ahead and redirect user to 'task'
+     when we create an item just send that user back to the list
+     '''
+     success_url = reverse_lazy('tasks')

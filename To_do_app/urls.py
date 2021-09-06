@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf.urls import url
 
 '''import TaskList class from views into this urls.py file of the application'''
-from . views import TaskList, TaskDetail
+from . views import TaskList, TaskDetail, TaskCreate
 
 '''
 TaskList is a class in our views.py but our urls.py of our app cannot use class in here so we will have to modify
@@ -15,4 +15,5 @@ path('task/<int:pk>/', TaskDetail.as_view(), name='tasks'),
 urlpatterns = [
     path('', TaskList.as_view(), name='tasks'),
     path('task/<int:pk>/', TaskDetail.as_view(), name='task'),
+    path('create-task/', TaskCreate.as_view(), name='task-create'),
 ]
