@@ -1,0 +1,9 @@
+<!---this link will send you back to the task ListView page--->
+<a href = "{% url 'tasks' %}">Go back</a>
+
+<!---the form tag will handle the Post request--->
+<form method = "POST">
+    {% csrf_token %}
+    <p>Are you sure you wanna delete the task? "{{task}}"</p>
+    <input type="submit" value = "Delete"/>
+</form>

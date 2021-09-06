@@ -4,7 +4,7 @@ from django.shortcuts import render
 for to create view we need to import
 UpdateView is pretty similar to createView and its gonna be imported from django.views.generic.edit
 '''
-from django.views.generic.edit import CreateView , UpdateView
+from django.views.generic.edit import CreateView , UpdateView, DeleteView
 
 '''import the class Task inside the models.py file of your application in django project'''
 from . models import Task
@@ -122,4 +122,22 @@ class TaskUpdate(UpdateView):
     if everything goes correctly then go ahead and redirect user to 'task'
     when we create an item just send that user back to the list
     '''
+    success_url = reverse_lazy('tasks')
+
+'''
+the DeleteView is supposed to be like a confirmation page
+it does two things it renders out the confirmation page that says Are you sure that you want to delete this item?
+and then when we send a post request it's gonna delete that item
+
+by default the DeleteView is gonna look for a template with the name of model_name_confirm_delete.html
+here in my case it will be task_confirm_delete.html
+'''
+class Delete(DeleteView):
+    model = Task
+    '''
+    by default context_object_name will be object
+    but here i am going to set that to my custome object name using context_object_name = 'task'
+    '''
+    context_object_name = 'task'
+    '''once we delete an item we want to redirect our user to the home page that contains the list of tasks'''
     success_url = reverse_lazy('tasks')
