@@ -36,7 +36,7 @@ class CustomLoginView(LoginView):
     '''we don't need model but a template here
        so django already provides us with a login form for our template all we need todo se specify the fields and we are done
     '''
-    template_name = 'To_do_app/login.html'
+    template_name = 'To_do_app/Login.html'
     fields = '__all__'
     '''
     redirect an authenticated user tham means once the user is authenticated they shouldn't be allowed on this page
