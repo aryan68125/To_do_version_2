@@ -5,38 +5,42 @@
     <p>{{request.user}}</p> <!---it will show the current user logged in to the website--->
     <!---add the link for logout operation--->
     <a href="{% url 'logout' %}">Log out</a>
+
+    <!---show task list only when the user is logged in--->
+    <hr>
+    <h2>My to do list</h2>
+    <!---create a link to add items--->
+    <a href="{%url 'task-create'%}">Add Task</a>
+
+    <table>
+        <tr>
+          <th>Item</th>
+          <th></th>
+          <th></th>
+        </tr>
+
+        <!---getting the object_list that we discussed earlier and getting all the titles
+        weh have changed our context_object_name (objects_list by default) to
+        context_object_name = 'tasks' in views.py file of the application--->
+        {%for task in tasks %}
+        <tr>
+           <td>{{task.title}}</td>
+           <!---a tag holds created link in the html page--->
+           <td><a href = "{%url 'task' task.id%}"> View </a></td>
+           <td><a href = "{%url 'task-update' task.id%}"> Edit </a></td>
+           <td><a href = "{%url 'task-delete' task.id%}"> Delete </a></td>
+        </tr>
+
+        <!---condition if the list is empty then empty condition should execute--->
+        {%empty%}
+          <h3>No task to remember!</h3>
+
+        {%endfor%}
+
 <!---if the user is not authenticated then we should provide a login link--->
 {% else %}
     <!---here provide the link for the login page--->
     <a href="{% url 'login' %}">Log in</a>
 {% endif %}
-<hr>
-<h2>My to do list</h2>
-<!---create a link to add items--->
-<a href="{%url 'task-create'%}">Add Task</a>
 
-<table>
-    <tr>
-      <th>Item</th>
-      <th></th>
-      <th></th>
-    </tr>
-
-    <!---getting the object_list that we discussed earlier and getting all the titles
-    weh have changed our context_object_name (objects_list by default) to
-    context_object_name = 'tasks' in views.py file of the application--->
-    {%for task in tasks %}
-    <tr>
-       <td>{{task.title}}</td>
-       <!---a tag holds created link in the html page--->
-       <td><a href = "{%url 'task' task.id%}"> View </a></td>
-       <td><a href = "{%url 'task-update' task.id%}"> Edit </a></td>
-       <td><a href = "{%url 'task-delete' task.id%}"> Delete </a></td>
-    </tr>
-
-    <!---condition if the list is empty then empty condition should execute--->
-    {%empty%}
-      <h3>No task to remember!</h3>
-
-    {%endfor%}
 </table>
