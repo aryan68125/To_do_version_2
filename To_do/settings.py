@@ -119,6 +119,11 @@ USE_L10N = True
 
 USE_TZ = True
 
+'''we want our django application to know where do we redirect the user if they are not authenticated
+here we are ridirecting user to our login page whoess url is named 'login'
+    path('login/', CustomLoginView.as_view(), name='login'), in the urls.py inside your django application folder
+'''
+LOGIN_URL = 'login'
 
 STATIC_URL = '/static/'
 #now add the static urls here for this website

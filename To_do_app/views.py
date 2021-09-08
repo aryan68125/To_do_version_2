@@ -1,5 +1,8 @@
 from django.shortcuts import render
 
+'''restrict the user from accessing tasklist if the user is not logged in'''
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 '''
 for to create view we need to import
 UpdateView is pretty similar to createView and its gonna be imported from django.views.generic.edit
@@ -62,8 +65,15 @@ so the class TaskList has inherited all the functionality of a ListView parent c
 ListView parent class will search the template named task_list.html in the directory
 To_do(project_name)/To_do_app(app_name)/templates/To_do_app(folder name)/task_list.html
 note you should create the file in this directory only otherwise the django project will crash
+
+LoginRequiredMixin will ristrict the list of task to appear only before those users who are logged in
+and not before those who are not
+if the user is already logged in then by default django will try to go to this url
+accounts/login/?next=/
+but we want our cutome url here so we have to go to settings.py in our django project
+to override the LoginRequiredMixin so that we can use our custom url
 '''
-class TaskList(ListView):
+class TaskList(LoginRequiredMixin, ListView):
     model = Task
 
     '''
@@ -79,6 +89,21 @@ class TaskList(ListView):
     '''
     context_object_name = 'tasks'
 
+    '''
+    so we need to restrict the users from seeing eah others data because we are pulling all the data from the
+    database regardless of the person logged in so we need to change that
+    we are trying to ensure that the user can only get the data that they owns
+
+    **kwargs means we are passing in the inital value
+    '''
+    def get_context_data(self, **kwargs):
+        '''now set the context value'''
+        context = super().get_context_data(**kwargs) #this will be set to the original value and making sure that we are inheriting from the original item
+        #now we can start setting up the values here we are modifying context_object_name data
+        context['tasks'] = context['tasks'].filter(user=self.request.user)
+        context['count'] = context['tasks'].filter(complete=False).count()
+        return context
+
 '''
 this class TaskDetail will inherit all the properties of the DetailView parent class from the inbuilt django classes
 
@@ -92,7 +117,7 @@ now setting a cutom template name
 changing the default template name from task_detail.html to task.html can be achieved by the code below
 template_name = 'app_name/task.html' so basically we are telling django to look for task.html instead of task_detail.html
 '''
-class TaskDetail(DetailView):
+class TaskDetail(LoginRequiredMixin, DetailView):
     model = Task
     context_object_name = 'task'
     template_name = 'To_do_app/task.html'
@@ -101,7 +126,7 @@ class TaskDetail(DetailView):
 createView has more complex logic because we are actually sending a post request to create an item
 by default the CreateView is gonna look for task_form.html
 '''
-class TaskCreate(CreateView):
+class TaskCreate(LoginRequiredMixin, CreateView):
      model = Task
 
      '''
@@ -112,7 +137,7 @@ class TaskCreate(CreateView):
      here we wanna list out all of the fields in our from so
      fields = '__all__' will list out all of the items in the field
      '''
-     fields = '__all__'
+     fields = ['title','discription','complete']
 
      '''
      so I also wann make sure that we can redirect the user successfully to a different page so we also need to add this to our
@@ -124,13 +149,25 @@ class TaskCreate(CreateView):
      '''
      success_url = reverse_lazy('tasks')
 
+     '''
+     override a method called form valid in this class based view
+     '''
+     def form_valid(self, form):
+         '''
+         this for_valid will get triggered by default during the post request we need to change that so that
+         users can only modify their data and not other's data
+         '''
+         form.instance.user = self.request.user
+         print(str(form.instance.user))
+         return super(TaskCreate, self).form_valid(form)
+
 '''
 this UpdateView is supposed to take in an item and its supposed to prefill an form
 and once we submit it is supposed to modify the data in the database
 bydefault this UpdateView will look for the template named model_name_form.html here in my case it will look for
 task_form.html
 '''
-class TaskUpdate(UpdateView):
+class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
 
     '''
@@ -141,7 +178,7 @@ class TaskUpdate(UpdateView):
     here we wanna list out all of the fields in our from so
     fields = '__all__' will list out all of the items in the field
     '''
-    fields = '__all__'
+    fields = ['title','discription','complete']
 
     '''
     so I also wann make sure that we can redirect the user successfully to a different page so we also need to add this to our
@@ -161,7 +198,7 @@ and then when we send a post request it's gonna delete that item
 by default the DeleteView is gonna look for a template with the name of model_name_confirm_delete.html
 here in my case it will be task_confirm_delete.html
 '''
-class Delete(DeleteView):
+class Delete(LoginRequiredMixin, DeleteView):
     model = Task
     '''
     by default context_object_name will be object
