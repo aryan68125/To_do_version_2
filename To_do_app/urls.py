@@ -2,7 +2,13 @@ from django.urls import path
 from django.conf.urls import url
 
 '''import TaskList class from views.py into this urls.py file of the application'''
-from . views import TaskList, TaskDetail, TaskCreate, TaskUpdate, Delete
+from . views import TaskList, TaskDetail, TaskCreate, TaskUpdate, Delete, CustomLoginView
+
+'''we can actually use the views directly
+    path('logout/', LogoutView.as_view(next_page = 'login' ), name='logout'), will use the LogoutView directly
+    next_page = 'login' means once we press login button in pur front end it should send the user back to the login page
+'''
+from django.contrib.auth.views import LogoutView
 
 '''
 TaskList is a class in our views.py but our urls.py of our app cannot use class in here so we will have to modify
@@ -13,6 +19,8 @@ view by default looks for pk value
 path('task/<int:pk>/', TaskDetail.as_view(), name='tasks'),
 '''
 urlpatterns = [
+    path('login/', CustomLoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(next_page = 'login' ), name='logout'),
     path('', TaskList.as_view(), name='tasks'),
     path('task/<int:pk>/', TaskDetail.as_view(), name='task'),
     path('create-task/', TaskCreate.as_view(), name='task-create'),

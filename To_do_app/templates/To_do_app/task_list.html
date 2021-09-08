@@ -1,4 +1,17 @@
-<h2>home page made by aditya</h2>
+{% if request.user.is_authenticated %}
+    <!---representation of an header bar--->
+    <!---acess the logged in user with a request object here using request.user object--->
+    <!---by default django will use sessions to register the user--->
+    <p>{{request.user}}</p> <!---it will show the current user logged in to the website--->
+    <!---add the link for logout operation--->
+    <a href="{% url 'logout' %}">Log out</a>
+<!---if the user is not authenticated then we should provide a login link--->
+{% else %}
+    <!---here provide the link for the login page--->
+    <a href="{% url 'login' %}">Log in</a>
+{% endif %}
+<hr>
+<h2>My to do list</h2>
 <!---create a link to add items--->
 <a href="{%url 'task-create'%}">Add Task</a>
 

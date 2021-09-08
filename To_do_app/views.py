@@ -23,6 +23,35 @@ from django.views.generic.detail import DetailView
 from django.urls import reverse_lazy
 
 '''
+add a loginView into our views.py so that we can use django's inbuilt login page functionality for user login and authentiation of users
+in our website
+import authentication prebuilt library to authentiacate our users
+'''
+from django.contrib.auth.views import LoginView
+
+'''
+the class below will handel all the functionality of a login page
+'''
+class CustomLoginView(LoginView):
+    '''we don't need model but a template here
+       so django already provides us with a login form for our template all we need todo se specify the fields and we are done
+    '''
+    template_name = 'To_do_app/login.html'
+    fields = '__all__'
+    '''
+    redirect an authenticated user tham means once the user is authenticated they shouldn't be allowed on this page
+    redirect_authenticated_user = False (By default) set redirect_authenticated_user = True
+    '''
+    redirect_authenticated_user = True
+
+    '''
+    override the success url here so once we login in this we will just set a function
+    '''
+    def get_success_url(self):
+        '''send the user to the tasks list page'''
+        return reverse_lazy('tasks')
+
+'''
 create a class named TaskList and inherit the ListView
 and this ListView is supposed to return back a template with a query set of data
 
