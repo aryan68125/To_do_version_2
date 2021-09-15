@@ -138,7 +138,9 @@ LOGIN_URL = 'login'
 STATIC_URL = '/static/'
 #now add the static urls here for this website
 #static is like graphics icons and all that stuff for your website including your flex boxes
-STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

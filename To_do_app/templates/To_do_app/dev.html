@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
 <style>
     body {
@@ -45,7 +46,7 @@
         <p style  = "color: #FFFFFF;">Hello I am Aditya Kumar</p>
     </div>
     <div class="user-box">
-        <img src="static/img/dev.jpg" class="img-thumbnail" alt="...">
+        <img src='{% static "img/dev.jpg" %}' class="img-thumbnail" alt="...">
     </div>
     <div class="user-box">
       <p style  = "color: #FFFFFF;">I have made this app as a pet project. But that doesn't mean you cannot use it. As the name suggest it does what it the name says</p>
