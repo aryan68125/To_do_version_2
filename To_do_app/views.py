@@ -211,6 +211,10 @@ class LogoutView(View):
     def post(self, request):
         return redirect('login')
 
+class DeveloperView(View):
+    #this class will be responsible for showing the developer page
+    def get(self, request):
+        return render(request, 'To_do_app/dev.html')
 
 '''
 create a class named TaskList and inherit the ListView
