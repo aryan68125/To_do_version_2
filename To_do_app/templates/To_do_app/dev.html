@@ -22,12 +22,14 @@
         font-size: 1.5em;
         box-shadow: 0 6px 6px rgba(0, 0, 0, 0.6);
     }
+    img{
+  margin-bottom: 25px;
+}
 </style>
 
 <div class="login-box">
-  <h2>Login</h2>
-  <form method = "POST">
-
+  <h2>To do list application</h2>
+  <form method="post">
     {% csrf_token %}
 
     <!---message box--->
@@ -40,32 +42,28 @@
     {% endif %}
 
     <div class="user-box">
-      <input type="text" name="username" required="">
-      <label>Username</label>
+        <p style  = "color: #FFFFFF;">Hello I am Aditya Kumar</p>
     </div>
     <div class="user-box">
-      <input type="password" name="password" required="">
-      <label for="">Password</label>
+        <img src="static/img/dev.jpg" class="img-thumbnail" alt="...">
+    </div>
+    <div class="user-box">
+      <p style  = "color: #FFFFFF;">I have made this app as a pet project. But that doesn't mean you cannot use it. As the name suggest it does what it the name says</p>
+    </div>
+    <div class="user-box">
+      <p style  = "color: #FFFFFF;">So enjoy this application and don't forget to give me feedback good or bad it doesn't matter. I will definitely try to improve upon it.</p>
+    </div>
+    <div class="user-box">
+      <h2 style  = "color: #FFFFFF;">Contact Me:-</h2>
+      <p style  = "color: #FFFFFF;">Email - aryan68125@gmail.com</p>
     </div>
 
-      <input type = "submit" class = "btn btn-sm btn-block btn-primary" value = "Login">
-
-    <a href="{% url 'register' %}">
+    <a href="{%url 'register'%}">
       <span></span>
       <span></span>
       <span></span>
       <span></span>
-      Don't have an account?
-    </a>
-    <!---send user to the password recovery page where user will enter the email address
-    if the email address is already register then the token should be sent to the user's email address and from there
-    he or she should be able to login after setting up a new password--->
-    <a href="{% url 'register' %}">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      Forgot password or Username?
+      Please Register Yourself here
     </a>
   </form>
 </div>

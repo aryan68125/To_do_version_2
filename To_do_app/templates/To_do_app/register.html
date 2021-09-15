@@ -25,9 +25,8 @@
 </style>
 
 <div class="login-box">
-  <h2>Login</h2>
-  <form method = "POST">
-
+  <h2>Register</h2>
+  <form method="post">
     {% csrf_token %}
 
     <!---message box--->
@@ -44,29 +43,26 @@
       <label>Username</label>
     </div>
     <div class="user-box">
-      <input type="password" name="password" required="">
+      <input type="email" name="email" required="">
+      <label>email address</label>
+    </div>
+    <div class="user-box">
+      <input type="password" name="password">
       <label for="">Password</label>
     </div>
-
-      <input type = "submit" class = "btn btn-sm btn-block btn-primary" value = "Login">
-
-    <a href="{% url 'register' %}">
+    <a href="">
       <span></span>
       <span></span>
       <span></span>
       <span></span>
-      Don't have an account?
+      <button class ='btn' type="submit">Register</button>
     </a>
-    <!---send user to the password recovery page where user will enter the email address
-    if the email address is already register then the token should be sent to the user's email address and from there
-    he or she should be able to login after setting up a new password--->
-    <a href="{% url 'register' %}">
+    <a href="{%url 'login'%}">
       <span></span>
       <span></span>
       <span></span>
       <span></span>
-      Forgot password or Username?
+      Already have an account?
     </a>
   </form>
-</div>
 {% endblock %}

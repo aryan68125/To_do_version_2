@@ -119,6 +119,16 @@ USE_L10N = True
 
 USE_TZ = True
 
+'''
+this settings is required inorder to be able to send token to the users during registration process for email verification
+'''
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'userpiyush6@gmail.com'
+EMAIL_HOST_PASSWORD = 'rezwfjagyrxxmebx'
+
 '''we want our django application to know where do we redirect the user if they are not authenticated
 here we are ridirecting user to our login page whoess url is named 'login'
     path('login/', CustomLoginView.as_view(), name='login'), in the urls.py inside your django application folder
