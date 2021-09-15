@@ -36,6 +36,7 @@ from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeEr
 from . utils import generated_token
 from django.core.mail import EmailMessage
 from django.conf import settings
+from .usr import usr
 #----------------------------------------------------------------------------------------------------------------------
 
 '''import the class Task inside the models.py file of your application in django project'''
@@ -84,6 +85,7 @@ class CustomLoginView(LoginView):
     '''
     def get_success_url(self):
         '''send the user to the tasks list page'''
+        usr.user_present= True
         return reverse_lazy('tasks')
 
 '''
