@@ -3,8 +3,12 @@
     <!---acess the logged in user with a request object here using request.user object--->
     <!---by default django will use sessions to register the user--->
     <p>{{request.user}}</p> <!---it will show the current user logged in to the website--->
-    <!---add the link for logout operation--->
-    <a href="{% url 'logout' %}">Log out</a>
+
+    <!---add the button for logout operation--->
+    <form action="{% url 'logout' %}" method="post">
+      {% csrf_token %}
+      <input type="submit" value="Log out" class = "btn btn-sm btn-block btn-primary"/>
+    </form>
 
     <!---show task list only when the user is logged in--->
     <hr>

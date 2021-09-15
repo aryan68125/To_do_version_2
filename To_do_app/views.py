@@ -11,33 +11,6 @@ FormView allows to generate a from that we will be customizing so that we can us
 '''
 from django.views.generic.edit import CreateView , UpdateView, DeleteView, FormView
 
-#---------------------------------user registration related imports----------------------------------------------
-'''this is a inbuilt django Views class that handles the remdering of views that are built in to the django web framework'''
-from django.views.generic import View
-
-'''import messages app that is built in the django web framework'''
-from django.contrib import messages
-
-'''install validate-email module before importing it type pip3 install validate-email in your terminal to install the module'''
-from validate_email import validate_email
-
-from django.contrib.auth.models import User
-'''
-construct a url that is unique to the application that we've built so we need the the current domain that our application is running on
-and we will set it dynamically we can import this:- from django.contrib.sites.shortcuts import get_current_site
-'''
-from django.contrib.sites.shortcuts import get_current_site
-
-#now redirect user to the login page
-# so inorder to do that you need to import :- from django.template.loader import render_to_string this library renders a template with a context automatically
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
-from . utils import generated_token
-from django.core.mail import EmailMessage
-from django.conf import settings
-#----------------------------------------------------------------------------------------------------------------------
-
 '''import the class Task inside the models.py file of your application in django project'''
 from . models import Task
 
@@ -60,6 +33,37 @@ in our website
 import authentication prebuilt library to authentiacate our users
 '''
 from django.contrib.auth.views import LoginView
+
+#---------------------------------user registration related imports----------------------------------------------
+'''this is a inbuilt django Views class that handles the remdering of views that are built in to the django web framework'''
+from django.views.generic import View
+
+'''import messages app that is built in the django web framework'''
+from django.contrib import messages
+
+'''install validate-email module before importing it type pip3 install validate-email in your terminal to install the module'''
+from validate_email import validate_email
+
+from django.contrib.auth.models import User
+from django.contrib.auth import logout
+
+'''
+construct a url that is unique to the application that we've built so we need the the current domain that our application is running on
+and we will set it dynamically we can import this:- from django.contrib.sites.shortcuts import get_current_site
+'''
+from django.contrib.sites.shortcuts import get_current_site
+
+#now redirect user to the login page
+# so inorder to do that you need to import :- from django.template.loader import render_to_string this library renders a template with a context automatically
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
+from . utils import generated_token
+from django.core.mail import EmailMessage
+from django.conf import settings
+#----------------------------------------------------------------------------------------------------------------------
+
+
 
 
 
@@ -84,7 +88,6 @@ class CustomLoginView(LoginView):
     '''
     def get_success_url(self):
         '''send the user to the tasks list page'''
-        usr.user_present= True
         return reverse_lazy('tasks')
 
 '''
@@ -213,6 +216,8 @@ class LogoutView(View):
     #to handle the get request
     #to handle the get request
     def post(self, request):
+        logout(request)
+        messages.add_message(request,messages.INFO,'Logout sucessfull!')
         return redirect('login')
 
 class DeveloperView(View):
