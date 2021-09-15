@@ -1,24 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    h1 {
+        color: green;
+    }
+
+    /* Styling the button */
+    .btn {
+        cursor: pointer;
+        border: 1px solid #3498db;
+        background-color: transparent;
+        height: 50px;
+        width: 200px;
+        color: #3498db;
+        font-size: 1.5em;
+        box-shadow: 0 6px 6px rgba(0, 0, 0, 0.6);
+    }
+</style>
 {% if request.user.is_authenticated %}
     <!---representation of an header bar--->
     <!---acess the logged in user with a request object here using request.user object--->
     <!---by default django will use sessions to register the user--->
-    <p>{{request.user}}</p> <!---it will show the current user logged in to the website--->
+
+    <p style  = "color: #FFFFFF;">{{request.user}}</p> <!---it will show the current user logged in to the website--->
 
     <!---add the button for logout operation--->
     <form action="{% url 'logout' %}" method="post">
       {% csrf_token %}
-      <input type="submit" value="Log out" class = "btn btn-sm btn-block btn-primary"/>
+      <input type="submit" value="Log out" class = "btn"/>
     </form>
 
     <!---show task list only when the user is logged in--->
     <hr>
-    <h2>My to do list</h2>
+    <h2 style  = "color: #FFFFFF;">My to do list</h2>
     <!---create a link to add items--->
     <a href="{%url 'task-create'%}">Add Task</a>
 
-    <table>
+    <table class ="tbl">
         <tr>
-          <th>Item</th>
+          <th style  = "color: #FFFFFF;">Item</th>
           <th></th>
           <th></th>
         </tr>
@@ -28,7 +48,7 @@
         context_object_name = 'tasks' in views.py file of the application--->
         {%for task in tasks %}
         <tr>
-           <td>{{task.title}}</td>
+           <td style  = "color: #FFFFFF;">{{task.title}}</td>
            <!---a tag holds created link in the html page--->
            <td><a href = "{%url 'task' task.id%}"> View </a></td>
            <td><a href = "{%url 'task-update' task.id%}"> Edit </a></td>
@@ -37,7 +57,7 @@
 
         <!---condition if the list is empty then empty condition should execute--->
         {%empty%}
-          <h3>No task to remember!</h3>
+          <h3 style  = "color: #FFFFFF;">No task to remember!</h3>
 
         {%endfor%}
 
@@ -48,3 +68,4 @@
 {% endif %}
 
 </table>
+{% endblock %}
