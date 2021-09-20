@@ -2,7 +2,7 @@ from django.urls import path
 from django.conf.urls import url
 
 '''import TaskList class from views.py into this urls.py file of the application'''
-from . views import TaskList, TaskDetail, TaskCreate, TaskUpdate, Delete, CustomLoginView, LogoutView, RegistrationView, ActivateAccountView, DeveloperView
+from . views import TaskList, TaskDetail, TaskCreate, TaskUpdate, Delete, CustomLoginView, LogoutView, RegistrationView, ActivateAccountView, DeveloperView, RequestResetEmailView, SetNewPasswordView
 
 '''we can actually use the views directly
     path('logout/', LogoutView.as_view(next_page = 'login' ), name='logout'), will use the LogoutView directly
