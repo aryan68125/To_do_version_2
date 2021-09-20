@@ -63,11 +63,14 @@ from django.core.mail import EmailMessage
 from django.conf import settings
 #----------------------------------------------------------------------------------------------------------------------
 
+#----------------------reset password----------------------
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+#----------------------reset password----------------------
 
 
 
 
-
+#------------------------------------------User Login Register and Reset Password related classes-------------------------------------------------
 '''
 the class below will handel all the functionality of a login page
 '''
@@ -220,11 +223,130 @@ class LogoutView(View):
         messages.add_message(request,messages.INFO,'Logout sucessfull!')
         return redirect('login')
 
+#--------------reset password related views starts here-----------------
+class RequestResetEmailView(View):
+    #here we are gonna have a from where user can supply their email address
+    def get(self, request):
+        return render(request, 'To_do_app/request-reset-email.html')
+
+    #here we will handle the post request from request-reset-email.html page
+    def post(self,request):
+        email = request.POST['email']
+
+        #before we send the mail to this email address we need to check if this user even exist in our database
+        if not validate_email(email): #step1. check the email is valid or not
+            messages.add_message(request,messages.INFO,'email address not valid!')
+            return render(request, 'To_do_app/request-reset-email.html')
+
+        user = User.objects.filter(email=email) #this will find the user having the email address entered in the provide email section of the reset passsword html page
+        if user.exists():
+            # this will return true if the user is already in our website's database
+            #send the verification link to the user's email address
+            #step1. construct a url that is unique to the application that we've built so we need the the current domain that our application is running on
+            #       and we will set it dynamically we can import this:- from django.contrib.sites.shortcuts import get_current_site
+            current_site = get_current_site(request) #get_current_site(request) will give us the current domain of our website dinamically
+            #step2. create an email subject
+            email_subject= 'Reset password'
+
+            #step3. construct a message
+            # so inorder to do that you need to import :- from django.template.loader import render_to_string this library renders a template with a context automatically
+            #convert the user.pk into bytes so we need to import:- from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
+            #import a module that generated a unique token for our application when we need to verify the user's email address :- from django.contrib.auth.tokens import PasswordResetTokenGenerator it can be used to activate accounts and to reset password
+            create_a_context_for_front_end={
+                'user':user,
+                'domain':current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user[0].pk)),
+                'token': PasswordResetTokenGenerator().make_token(user[0]), #here we won't use the utils.py file to generate a token here we will use an inbuilt class to generate a token to set a new password here use user[0] otherwise it will throw an error while running the website on heroku server
+            }
+            message = render_to_string('To_do_app/reset-user-password.html',create_a_context_for_front_end)
+            #step4. send an email for authentation of the account import :- from django.core.mail import EmailMessage and import settings :- from django.conf import settings
+            '''
+            email_message = EmailMessage(
+               email_subject,            #subject of the email
+               message,                  #message that you want to send via email
+               settings.EMAIL_HOST_USER, #EMAIL_HOST = 'smtp.gmail.com' that is being imported from the settings.py of the django project
+               [email],                  #email adderess entered by the user in the regitration form in the front end of the application of the django project
+            )
+            '''
+            email_message = EmailMessage(
+               email_subject,
+               message,
+               settings.EMAIL_HOST_USER,
+               [email],
+            )
+            email_message.send()
+
+
+        messages.add_message(request,messages.INFO,'email reset link has been sent to your email address')
+        return render(request, 'To_do_app/request-reset-email.html')
+
+class SetNewPasswordView(View):
+    def get(self, request, uidb64, token):
+        #send uidb64 and token  to the set-new-password.html via context dictionary
+        context = {
+            'uidb64':uidb64,
+            'token':token,
+        }
+
+        #prevent user from using the same token that was sent in the email of the user to reset the password
+        try:
+            user_id = force_text(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=user_id)
+            if not PasswordResetTokenGenerator().check_token(user, token): #if this returns false then the link is already used to reset the password
+                messages.add_message(request,messages.INFO,'Password reset link expired')
+                return redirect('login')
+
+        except DjangoUnicodeDecodeError as identifier:
+            messages.add_message(request,messages.INFO,'Oops something went wrong!')
+            return render(request, 'To_do_app/set-new-password.html',context)
+
+        return render(request, 'To_do_app/set-new-password.html', context)
+
+    #handeling the post requests
+    def post(self, request, uidb64, token):
+        #send uidb64 and token  to the set-new-password.html via context dictionary
+        context = {
+            'uidb64':uidb64,
+            'token':token,
+            'has_error': False,
+        }
+
+        #check the password
+        password1 = request.POST.get('password_1')
+        password2 = request.POST.get('password_2')
+        if len(password1) < 6:
+            messages.add_message(request,messages.INFO,'password must be atleast 6 characters long')
+            context['has_error'] = True
+        if password1 != password2:
+            messages.add_message(request,messages.INFO,'password do not match')
+            context['has_error'] = True
+        if context['has_error'] == True:
+            return render(request, 'To_do_app/set-new-password.html',context)
+
+        #if the user entered the correct password then we are going to proceed with setting the new password for the user account
+        try:
+            user_id = force_text(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=user_id)
+            user.set_password(password1)
+            user.save()
+            messages.add_message(request,messages.INFO,'password changed successfully')
+            return redirect('login')
+        except DjangoUnicodeDecodeError as identifier:
+            messages.add_message(request,messages.INFO,'Oops something went wrong!')
+            return render(request, 'To_do_app/set-new-password.html',context)
+
+        return render(request, 'To_do_app/set-new-password.html',context)
+
+#------------------------------------------User Login Register and Reset Password related classes-------------------------------------------------
+
+
 class DeveloperView(View):
     #this class will be responsible for showing the developer page
     def get(self, request):
         return render(request, 'To_do_app/dev.html')
 
+
+#----------------------------------------To do app core functionality related classes--------------------------------------------------------------
 '''
 create a class named TaskList and inherit the ListView
 and this ListView is supposed to return back a template with a query set of data
@@ -378,3 +500,5 @@ class Delete(LoginRequiredMixin, DeleteView):
     context_object_name = 'task'
     '''once we delete an item we want to redirect our user to the home page that contains the list of tasks'''
     success_url = reverse_lazy('tasks')
+
+#----------------------------------------To do app core functionality related classes--------------------------------------------------------------

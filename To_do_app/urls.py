@@ -23,6 +23,8 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(next_page = 'login' ), name='logout'),
     path('register/', RegistrationView.as_view(), name='register'),
     path('activate/<uidb64>/<token>', ActivateAccountView.as_view(), name='activate'),
+    path('request-reset-email', views.RequestResetEmailView.as_view(), name='request-reset-email'),
+    path('set-new-password/<uidb64>/<token>', views.SetNewPasswordView.as_view(), name='set-new-password'),
 
     path('developer/', DeveloperView.as_view(), name='developer'),
 
