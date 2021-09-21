@@ -383,7 +383,7 @@ class TaskList(LoginRequiredMixin, ListView):
     context_object_name = 'tasks'
 
     '''
-    so we need to restrict the users from seeing eah others data because we are pulling all the data from the
+    so we need to restrict the users from seeing each others data because we are pulling all the data from the
     database regardless of the person logged in so we need to change that
     we are trying to ensure that the user can only get the data that they owns
 
