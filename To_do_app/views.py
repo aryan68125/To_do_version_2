@@ -395,6 +395,14 @@ class TaskList(LoginRequiredMixin, ListView):
         #now we can start setting up the values here we are modifying context_object_name data
         context['tasks'] = context['tasks'].filter(user=self.request.user)
         context['count'] = context['tasks'].filter(complete=False).count()
+
+        #handeling search task operation in the task_list.html
+        search_input = self.request.GET.get("search-area") or ''
+        #filter the task from the database that the user has typed in the search area
+        if search_input:
+            context['tasks'] = context['tasks'].filter(title__startswith=search_input) #title__icontains will filter the tasks based on letters i.e if the word typed in by the user is there in the task title wheather at the beginning , middle or at the end it will be shown to the user after the search is complete
+
+        context['search_input'] = search_input
         return context
 
 '''

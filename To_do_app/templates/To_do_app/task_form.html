@@ -1,12 +1,22 @@
-<h3>task form</h3>
-<!---create a back link in our form --->
-<a href = "{% url 'tasks' %}">Go back</a>
-<form method ="POST" action ="">
-  {% csrf_token %}
-  <!---
-  since we are using CreateView class in views.py django has already created our input from for us
-  --->
-   {{form.as_p}}
-  <input type="submit" value="Submit" />
+{% extends "main.html" %}
+{% block content %}
 
-</form>
+<div class="header-bar">
+    <!---adding a html back arrow--->
+    <!---create a back link in our form --->
+    <a href = "{% url 'tasks' %}" id = "go-back-link">&#8592;</a>
+</div>
+
+<div class = "card-body">
+  <form method ="POST" action ="">
+    {% csrf_token %}
+    <!---
+    since we are using CreateView class in views.py django has already created our input from for us
+    --->
+     {{form.as_p}}
+    <input type="submit" value="Submit" class = "btn"/>
+
+  </form>
+</div>
+
+{% endblock %}

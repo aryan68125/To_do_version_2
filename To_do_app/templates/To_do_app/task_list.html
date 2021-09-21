@@ -1,71 +1,75 @@
-{% extends "base.html" %}
+{% extends "main.html" %}
 {% block content %}
-<style>
-    h1 {
-        color: green;
-    }
-
-    /* Styling the button */
-    .btn {
-        cursor: pointer;
-        border: 1px solid #3498db;
-        background-color: transparent;
-        height: 50px;
-        width: 200px;
-        color: #3498db;
-        font-size: 1.5em;
-        box-shadow: 0 6px 6px rgba(0, 0, 0, 0.6);
-    }
-</style>
 {% if request.user.is_authenticated %}
     <!---representation of an header bar--->
     <!---acess the logged in user with a request object here using request.user object--->
     <!---by default django will use sessions to register the user--->
-
-    <p style  = "color: #FFFFFF;">{{request.user}}</p> <!---it will show the current user logged in to the website--->
-
-    <!---add the button for logout operation--->
-    <form action="{% url 'logout' %}" method="post">
-      {% csrf_token %}
-      <input type="submit" value="Log out" class = "btn"/>
-    </form>
+    <div class="header-bar">
+          <div>
+               <!---it will show the current user logged in to the website |title will display our username with first letter capitalized--->
+               <h1 style  = "color: #FFFFFF;"> Hello {{request.user|title}} </h1>
+               <h3 style = "margin:0; color: #FFFFFF;">You have <i>{{count}}</i> incomplete task{{ count|pluralize:"s" }}</h3>
+          </div>
+          <!---add the button for logout operation--->
+          <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Log out" class = "btn"/>
+          </form>
+    </div>
 
     <!---show task list only when the user is logged in--->
     <hr>
-    <h2 style  = "color: #FFFFFF;">My to do list</h2>
-    <!---create a link to add items--->
-    <a href="{%url 'task-create'%}">Add Task</a>
+    <h2 style  = "color: #FFFFFF; font-size: 40px; margin-left:10px;">My to do list</h2>
 
-    <table class ="tbl">
-        <tr>
-          <th style  = "color: #FFFFFF;">Item</th>
-          <th></th>
-          <th></th>
-        </tr>
+    <!---add a search form to search for the tasks--->
+    <div id="search-add-wrapper" style = "margin-top: 20px; display:flex; margin-bottom:20px;">
+      <form method = "GET">
+          <input type = "text" name = "search-area" value = "{{search_input}}" style="margin: 10px">
+          <input type = "submit" value = "search" class = "btn" style="margin: 10px">
+      </form>
+      <!---create a link to add items--->
+      <a href="{%url 'task-create'%}" id = "add-link">&#x2b;</a>
+    </div>
 
-        <!---getting the object_list that we discussed earlier and getting all the titles
-        weh have changed our context_object_name (objects_list by default) to
-        context_object_name = 'tasks' in views.py file of the application--->
-        {%for task in tasks %}
-        <tr>
-           <td style  = "color: #FFFFFF;">{{task.title}}</td>
-           <!---a tag holds created link in the html page--->
-           <td><a href = "{%url 'task' task.id%}"> View </a></td>
-           <td><a href = "{%url 'task-update' task.id%}"> Edit </a></td>
-           <td><a href = "{%url 'task-delete' task.id%}"> Delete </a></td>
-        </tr>
+   <!---task list table--->
+   <div class = "task-items-wrapper">
+     <!---getting the object_list that we discussed earlier and getting all the titles
+     weh have changed our context_object_name (objects_list by default) to
+     context_object_name = 'tasks' in views.py file of the application--->
+     {%for task in tasks %}
 
-        <!---condition if the list is empty then empty condition should execute--->
-        {%empty%}
-          <h3 style  = "color: #FFFFFF;">No task to remember!</h3>
+         <div class = "task-wrapper">
+           <!---check if the task is complete--->
+           {% if task.complete %}
+                 <div class="task-title">
+                    <div class = "task-complete-icon"></div>
+                    <i><s><a href = "{%url 'task-update' task.id%}" style  = "color: #FFFFFF;"> {{task}} </a></s></i>
+                 </div>
+                 <!---add a delete icon--->
+                 <a class = "delete-link" href = "{%url 'task-delete' task.id%}" style  = "color: RED;"> &#215; </a>
+           {% else %}
+           <div class="task-title">
+              <div class = "task-incomplete-icon"></div>
+              <a href = "{%url 'task-update' task.id%}" style  = "color: #FFFFFF;"> {{task}} </a>
+           </div>
+           <!---add a delete icon--->
+           <a class = "delete-link" href = "{%url 'task-delete' task.id%}" style  = "color: RED;"> &#215; </a>
+           {% endif %}
 
-        {%endfor%}
+         </div>
 
-<!---if the user is not authenticated then we should provide a login link--->
-{% else %}
-    <!---here provide the link for the login page--->
-    <a href="{% url 'login' %}">Log in</a>
-{% endif %}
+     <!---condition if the list is empty then empty condition should execute--->
+     {%empty%}
+       <h3 style  = "color: #FFFFFF;">No task to remember!</h3>
 
-</table>
+     {%endfor%}
+   </div>
+
+
+   <!---if the user is not authenticated then we should provide a login link--->
+   {% else %}
+       <!---here provide the link for the login page--->
+       <a href="{% url 'login' %}">Log in</a>
+   {% endif %}
+
 {% endblock %}

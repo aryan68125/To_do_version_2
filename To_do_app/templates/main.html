@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>To do items</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!---font style for the pages--->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gluten:wght@300&display=swap" rel="stylesheet">
+
+    <style>
+       body{
+         background: url("/static/img/bg_2.jpg") 50% 0 no-repeat fixed;
+         background-size: cover;
+         background-attachment: fixed;
+         font-family: 'Gluten', cursive;
+         padding-top:50px
+       }
+
+       h1,
+       h2,
+       h3,
+       h4,
+       h5,
+       {
+         font-family : 'Raleway', sans-serif;
+       }
+
+       .header-bar{
+         display: flex;
+         justify-content: space-between;
+         color: #fff;
+         padding:10px;
+         border-radius: 5px 5px 0 0;
+
+       }
+
+       .task-wrapper{
+         display:flex;
+         align-items: center;
+         justify-content: space-between;
+         padding:20px;
+         border-top: 1px solid rgb(226, 226, 226);
+       }
+
+       .task-title{
+         display:flex;
+       }
+       .task-title a {
+         text-decoration: none;
+         color: #fff;
+         margin-left: 10px;
+         font-size: 20px;
+       }
+       .task-complete-icon{
+         height:20px;
+         width:20px;
+         background-color: rgb(105, 192, 105);
+         border-radius: 50%;
+       }
+       .task-incomplete-icon{
+         height:20px;
+         width:20px;
+         background-color: rgb(218, 218, 218);
+         border-radius: 50%;
+       }
+       .delete-link{
+         text-decoration: none;
+         font-weight:900;
+         color: #cf4949;
+         font-size:42px;
+         line-height:0;
+         text-shadow: 1px 1px #81413b;
+       }
+       #add-link{
+         color: #536f16;
+         text-decoration: none;
+         font-size: 112px;
+         text-shadow: 1px 1px #81413b;
+         margin-left:10px;
+       }
+      #go-back-link{
+        color: #FFFFFF;
+        text-decoration: none;
+        font-size: 80px;
+        text-shadow: 1px 1px #81413b;
+        margin-left:10px;
+      }
+      input[type=text],
+      textarea{
+        border: 1px solid #DA70D6;
+        border-radius: 5px;
+        width=90%;
+        padding:10px;
+      }
+      label{
+        padding-top: 10px !important;
+        display: block;
+        color:#FFFFFF;
+        font-size: 30px;
+      }
+      .card-body{
+        padding:20px
+      }
+       /* Styling the button */
+       .btn {
+           cursor: pointer;
+           border: 1px solid #3498db;
+           border-radius: 10px;
+           background-color: transparent;
+           height: 50px;
+           width: 200px;
+           color: #3498db;
+           font-size: 1.5em;
+           box-shadow: 0 6px 6px rgba(0, 0, 0, 0.6);
+       }
+       .btn-delete {
+           cursor: pointer;
+           border: 1px solid red;
+           border-radius: 10px;
+           background-color: transparent;
+           height: 50px;
+           width: 200px;
+           color: red;
+           font-size: 1.5em;
+           box-shadow: 0 6px 6px rgba(0, 0, 0, 0.6);
+       }
+
+       /*blurr effect for the container*/
+       .container{
+         max-width: 550px;
+         margin: auto;
+         background-color: rgba(0, 0, 0, 0.5);
+         -webkit-box-shadow: 2px 2px 13px -4px rgba(0, 0, 0, 0.21);
+         box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.21);
+         position: relative;
+         background: inherit;
+         overflow: hidden;
+         z-index: 1;
+         border-radius: 10px;
+       }
+
+       .container:before{
+         content : "";
+         position: absolute;
+         background: inherit;
+         top: 0;
+         bottom: 0;
+         left: 0;
+         right: 0;
+         box-shadow: inset 0 0 200px rgba(255, 255, 255, 0.5);
+         filter:blur(10px);
+         margin:-20px;
+         z-index:-1;
+       }
+    </style>
+
+  </head>
+  <body>
+      <div class="container">
+          {% block content %}
+
+          {% endblock %}
+      </div>
+  </body>
+</html>
