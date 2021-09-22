@@ -51,7 +51,7 @@ from django.contrib.auth import logout
 construct a url that is unique to the application that we've built so we need the the current domain that our application is running on
 and we will set it dynamically we can import this:- from django.contrib.sites.shortcuts import get_current_site
 '''
-from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.sites.shortcuts import get_current_site 
 
 #now redirect user to the login page
 # so inorder to do that you need to import :- from django.template.loader import render_to_string this library renders a template with a context automatically
