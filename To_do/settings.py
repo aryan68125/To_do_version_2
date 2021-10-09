@@ -25,7 +25,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-lfmjs3skxihf64k+iqftken&9pcryx^77(s9szmlv=leg3zd-%'
+SECRET_KEY = 'django-insecure-lfmjs3skxi78984654123135679786413164sajkhkhashasiqqodhf64k+iqftken&9p8986454123164497864531246cryx^77(s9szmlv=leg3zd-%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -126,8 +126,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'userpiyush6@gmail.com'
-EMAIL_HOST_PASSWORD = 'rezwfjagyrxxmebx'
+EMAIL_HOST_USER = 'yourEmailAddress'
+EMAIL_HOST_PASSWORD = 'YourPassword or Email token'
 
 '''we want our django application to know where do we redirect the user if they are not authenticated
 here we are ridirecting user to our login page whoess url is named 'login'
